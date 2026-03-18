@@ -5,7 +5,7 @@
             "title": "Define the code generator",
             "icon": "xtext",
 
-            "tools": ["{{BASE-URL}}:8074/xtext_tool.json"]
+            "tools": ["{{BASE-URL}}:8074/xtext_tool.json"],
 
             "panels": [
                 {
