@@ -1,0 +1,187 @@
+{
+    "activities": [
+        {
+            "id": "xtext-generator",
+            "title": "Define the code generator",
+            "icon": "xtext",
+
+            "tools": ["https://ep.mde-network.org/tools/xtext/xtext_tool.json"],
+
+            "panels": [
+                {
+                    "id": "hidden-panel-mm",
+                    "name": "XMI text format",
+                    "ref": "ecore",
+                    "file": "uk.ac.kcl.inf.mdd.spelllang/model/generated/SpellLang.ecore"
+                },
+                {
+                    "id": "panel-composite",
+                    "name": "Language definition",
+                    "ref": "composite",
+                    "childPanels": [
+                        {
+                            "id": "panel-cg",
+                            "name": "Code generator",
+        
+                            "ref": "xtext-generator",
+        
+                            "file": "uk.ac.kcl.inf.mdd.spelllang/src/uk/ac/kcl/inf/mdd/generator/SpellLangGenerator.xtend",
+        
+                            "buttons": [
+                                {
+                                    "id": "generate-editor-button",
+                                    "hint": "Generate Xtext editor and code generator",
+                                    "icon": "run",
+                                    "actionfunction": "function-xtext"
+                                },
+                                {
+                                    "ref": "help-button"
+                                }
+                            ],
+                            
+                            "editorActivity": "xtext-use",
+                            "editorPanel": "xtext-editor"
+                        },
+                        {
+                            "id": "panel-mm-diagram",
+                            "name": "Metamodel diagram",
+                            "ref": "emfgraph"
+                        }
+                    ],
+
+                    "buttons": [
+                        {
+                            "id": "gen-mm-diagram",
+                            "hint": "Load metamodel diagram",
+                            "icon": "diagram-generate",
+                            "actionfunction": "function-emfatic2plantuml"
+                        },
+                        {
+                            "id": "show-gen-button",
+                            "icon": "editor",
+                            "internal": "toggle",
+                            "targetPanel": "panel-cg",
+                            "hint": "Toggle code generator code"
+                        },
+                        {
+                            "id": "show-diagram-button",
+                            "icon": "diagram",
+                            "internal": "toggle",
+                            "targetPanel": "panel-mm-diagram",
+                            "hint": "Toggle metamodel diagram"
+                        }
+                    ]
+                },
+                {
+                    "id": "hidden-panel-xtext",
+                    "ref": "xtext-grammar",
+                    "name": "Hidden grammar panel",
+                    "file": "uk.ac.kcl.inf.mdd.spelllang/src/uk/ac/kcl/inf/mdd/SpellLang.xtext"
+                },
+                {
+                    "id": "panel-console",
+                    "name": "Console",
+                    "ref": "console"
+                }
+            ],
+
+            "layout": {
+                "area": [
+                    ["panel-composite"],
+                    ["panel-console"]
+                ]
+            },
+
+            "actions": [
+                {
+                    "source": "panel-cg",
+                    "sourceButton": "generate-editor-button",
+                    
+                    "parameters": {
+                        "languageName": "uk.ac.kcl.inf.mdd.SpellLang",
+                        "baseName": "uk.ac.kcl.inf.mdd.spelllang",
+                        "extension": "spells",
+                        "grammar": "hidden-panel-xtext",
+                        "generator": "panel-cg"
+                    },
+
+                    "output": "panel-console"
+                },
+                {
+                    "source": "panel-composite",
+                    "sourceButton": "gen-mm-diagram",
+
+                    "parameters": {
+                        "language": "generated",
+                        "emfatic": "hidden-panel-mm"
+                    },
+
+                    "output": "panel-mm-diagram"
+                }
+            ]
+        },
+        {
+            "id": "xtext-use",
+            "title": "Use the code generator",
+            "icon": "xtext",
+
+            "tools": ["{{ID-xtext-editor}}/editor_tool.json", 
+                      "https://ep.mde-network.org/tools/emf/emf_tool.json",
+                      "https://ep.mde-network.org/tools/emfatic/emfatic_tool.json",
+                      "https://ep.mde-network.org/tools/epsilon/tools"],
+
+            "panels": [
+                {
+                    "id": "xtext-editor",
+                    "name": "Example spell definition",
+                    "ref": "xtext-editor",
+                    "extension": "spells",
+
+                    "file": "test/src/test3.spells"
+                },
+                {
+                    "id": "panel-generated-files",
+                    "name": "Generated Files",
+                    "ref": "multicode"
+                },
+                {
+                    "id": "panel-diagram",
+                    "name": "Model diagram",
+                    "ref": "emfgraph"
+                }
+            ],
+
+            "layout": {
+                "area": [
+                    ["xtext-editor", "panel-generated-files"],
+                    ["", "panel-diagram"]
+                ]
+            },
+
+            "actions": [
+                {
+                    "source": "xtext-editor",
+                    "sourceButton": "generate-code-button",
+                    
+                    "parameters": {
+                        "model": "xtext-editor",
+                        "fileName": "test/src/test3.spells"
+                    },
+                    
+                    "output": "panel-generated-files"
+                },
+                {
+                    "source": "xtext-editor",
+                    "sourceButton": "to-diagram-button",
+
+                    "parameters": {
+                        "input": "xtext-editor",
+                        "language": "generated"
+                    },
+
+                    "output": "panel-diagram"
+                }
+            ]
+        }
+    ]
+}

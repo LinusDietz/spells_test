@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="spellLang" nsURI="http://www.ac.uk/kcl/inf/mdd/SpellLang" nsPrefix="spellLang">
+  <eClassifiers xsi:type="ecore:EClass" name="Model">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="spells" upperBound="-1"
+        eType="#//SpellDefinition" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="session" upperBound="-1"
+        eType="#//SpellInvocation" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SpellDefinition">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="spellCode" eType="#//SpellExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SpellExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SimpleSpell" eSuperTypes="#//SpellExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Say" eSuperTypes="#//SimpleSpell">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="word" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Move" eSuperTypes="#//SimpleSpell">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="movement" eType="#//Movement"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Movement">
+    <eLiterals name="up" literal="up"/>
+    <eLiterals name="down" value="1" literal="down"/>
+    <eLiterals name="left" value="2" literal="left"/>
+    <eLiterals name="right" value="3" literal="right"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SpellInvocation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="spell" eType="#//SpellDefinition"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ComplexSpell" eSuperTypes="#//SpellExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="start" eType="#//SpellExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="next" upperBound="-1" eType="#//SimpleSpell"
+        containment="true"/>
+  </eClassifiers>
+</ecore:EPackage>

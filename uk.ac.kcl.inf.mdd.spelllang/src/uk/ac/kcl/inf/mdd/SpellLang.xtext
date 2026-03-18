@@ -1,0 +1,36 @@
+grammar uk.ac.kcl.inf.mdd.SpellLang with org.eclipse.xtext.common.Terminals
+
+generate spellLang "http://www.ac.uk/kcl/inf/mdd/SpellLang"
+
+Model:
+	spells += SpellDefinition+
+	session += SpellInvocation+
+;
+
+SpellDefinition:
+	name = ID spellCode = SpellExpression
+;
+
+SpellExpression:
+	SimpleSpell ({ComplexSpell.start = current} 'then' next += SimpleSpell)*
+;
+
+SimpleSpell:
+	Say | Move
+;
+
+Say:
+	'say' word=ID
+;
+
+Move:
+	'move' movement=Movement
+;
+
+enum Movement:
+	up | down | left | right
+;
+
+SpellInvocation:
+	'invoke' spell=[SpellDefinition]
+;
