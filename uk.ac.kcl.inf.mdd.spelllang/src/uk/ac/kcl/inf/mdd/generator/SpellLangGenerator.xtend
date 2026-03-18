@@ -29,7 +29,26 @@ class SpellLangGenerator extends AbstractGenerator {
 
 	def String className(Resource resource) '''Spells«resource.URI.trimFileExtension.lastSegment.toFirstUpper»'''
 
-	def doGenerate(Model spells, String className) {
-		// TODO: Put your code here (and in additional methods as needed)...
-	}
+	def doGenerate(Model spells, String className) '''
+		public class «className» {
+			public static void main (String[] args) {
+				«spells.session.map[si | si.doGenerate].join('\n')»
+			}
+		}
+	'''
+
+	def doGenerate(SpellInvocation si) '''
+		System.out.println("«si.spell.spellCode.generateSpellCode»");
+	'''
+
+	dispatch def String generateSpellCode(SpellExpression se) ''''''
+
+	dispatch def String generateSpellCode(SimpleSpell ss) ''''''
+
+	dispatch def String generateSpellCode(Say s) '''Say «s.word»'''
+
+	dispatch def String generateSpellCode(Move m) '''Move «m.movement»'''
+
+	dispatch def String generateSpellCode(ComplexSpell cs) '''
+	«cs.start.generateSpellCode»; «cs.next.map[se | se.generateSpellCode].join('; ')»'''
 }
