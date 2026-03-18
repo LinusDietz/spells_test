@@ -5,7 +5,7 @@
             "title": "Define the code generator",
             "icon": "xtext",
 
-            "tools": ["https://ep.mde-network.org/tools/xtext/xtext_tool.json"],
+            "tools": ["{{BASE-URL}}:8074/xtext_tool.json"]
 
             "panels": [
                 {
